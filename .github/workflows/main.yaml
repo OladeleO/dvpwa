@@ -1,0 +1,11 @@
+on: [push]
+
+jobs:
+  dependency_analysis:
+    runs-on: ubuntu-latest
+    name: Test dependencies for security flaws
+    steps:
+      - uses: actions/checkout@v2
+      - name:
+        run: pip3 install safety && safety check
+        shell: bash
