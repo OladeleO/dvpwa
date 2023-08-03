@@ -9,3 +9,12 @@ jobs:
       - name:
         run: pip3 install safety && safety check
         shell: bash
+
+  code_analysis:
+    runs-on: ubuntu-latest
+    name: Analyse code for security issues
+    steps:
+      - uses: actions/checkout@v2
+      - name: Code Security Analysis
+        run: pip3 install semgrep && semgrep --config "p/ci" --error
+        shell: bash
