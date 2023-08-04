@@ -6,7 +6,7 @@ jobs:
 
   build:
     name: Build
-    uses: ./.github/workflows/build.yml
+    uses: .github/workflows/main.yaml
     secrets: inherit #https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idsecretsinherit
 
 
