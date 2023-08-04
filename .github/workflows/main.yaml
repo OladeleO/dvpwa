@@ -57,3 +57,10 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL'
+
+  secrets_scanning:
+    name: Scan Secrets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Detect secrets with Talisman in incoming commits
+        uses: carhartl/talisman-secrets-scan-action@v1.4.0
