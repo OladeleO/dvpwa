@@ -4,7 +4,8 @@ on: [push]
 
 jobs:
 
-  dependency_analysis:
+  SCA:
+    needs: container_scanning
     runs-on: ubuntu-latest
     name: Test dependencies for security flaws
     steps:
@@ -13,7 +14,8 @@ jobs:
         run: pip3 install safety && safety check --continue-on-error
         shell: bash
 
-  code_analysis:
+  SAST:
+    needs: SCA
     runs-on: ubuntu-latest
     name: Analyse code for security issues
     steps:
@@ -22,7 +24,8 @@ jobs:
         run: pip3 install semgrep && semgrep --config "p/ci" --no-error
         shell: bash
 
-  dynamic_security_testing:
+  DAST:
+    needs: SAST
     runs-on: ubuntu-latest
     name: Scan live web app for security flaws
     steps:
