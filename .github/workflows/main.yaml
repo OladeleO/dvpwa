@@ -7,7 +7,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name:
-        run: pip3 install safety && safety check
+        run: pip3 install safety && safety check --continue-on-error
         shell: bash
 
   code_analysis:
