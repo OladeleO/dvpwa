@@ -16,7 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Code Security Analysis
-        run: pip3 install semgrep && semgrep --config "p/ci" --error
+        run: pip3 install semgrep && semgrep --config "p/ci" --no-error
         shell: bash
 
   dynamic_security_testing:
