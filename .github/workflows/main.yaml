@@ -36,3 +36,24 @@ jobs:
       - name: Stop containers
         if: always()
         run: docker-compose -f "docker-compose.yml" down
+
+  container_scanning:
+    name: Scan Container for Security Issues
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      
+      - name: Build an image from Dockerfile
+        run: |
+          docker build --file Dockerfile.app -t dvpwa.app:${{ github.sha }} .
+      
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'dvpwa.app:${{ github.sha }}'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL'
