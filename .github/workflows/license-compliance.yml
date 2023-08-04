@@ -1,0 +1,15 @@
+name: License Compliance
+
+on: 
+  workflow_dispatch:
+  workflow_call:
+
+jobs:
+  license-finder:
+  # Using https://github.com/pivotal/LicenseFinder
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v3
+      
+      

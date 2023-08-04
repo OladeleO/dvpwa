@@ -58,6 +58,11 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL'
 
+  license-compliance:
+    name: License compliance
+    uses: ./.github/workflows/license-compliance.yml
+    secrets: inherit
+  
   secrets_scanning:
     name: Scan Secrets
     runs-on: ubuntu-latest
