@@ -1,6 +1,15 @@
+name: Main CI / CD Pipeline
+
 on: [push]
 
 jobs:
+
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yml
+    secrets: inherit #https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idsecretsinherit
+
+
   dependency_analysis:
     runs-on: ubuntu-latest
     name: Test dependencies for security flaws
