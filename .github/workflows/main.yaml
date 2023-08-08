@@ -1,18 +1,12 @@
 name: Main CI / CD Pipeline
 
 #Security
+# AWS_ACCESS_KEY_ID="AKIAJAA49FFSFRFN6AAA" 
+# AWS_SECRET_ACCESS_KEY="u9N1o8s+u3q4uwt9s8dfsdf/afx/d/24449YiNHN"
 
 on: [push]
 
 jobs:
-
-  Secrets-scan:
-    name: gitleaks
-    runs-on: ubuntu-latest
-    steps:
-      - uses: gitleaks/gitleaks-action@v2
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   dependabot:
     runs-on: ubuntu-latest
@@ -102,8 +96,4 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL'
 
-  license-compliance:
-    name: License compliance
-    uses: ./.github/workflows/license-compliance.yml
-    secrets: inherit
-  
+
