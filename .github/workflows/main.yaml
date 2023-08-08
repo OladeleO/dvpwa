@@ -7,6 +7,30 @@ name: Main CI / CD Pipeline
 on: [push]
 
 jobs:
+
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Clone DVPWA repository
+        uses: actions/checkout@v2
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Build DVPWA app
+        run: python setup.py build
+      - name: Deploy DVPWA app to AWS EC2
+        uses: aws-actions/ec2-deploy@v1
+        with:
+          access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          region: eu-west-2
+          instance-type: t2.micro
+          key-name: my-key-pair
+          app-source: ./dist/dvpwa.zip
+          app-port: 8080
   
   SCA:
     needs: container_scanning
