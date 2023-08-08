@@ -69,6 +69,14 @@ jobs:
         with:
           target: http://localhost:8080
 
+      - name: ZAP Scan
+        uses: zaproxy/action-baseline@v0.6.1
+        with:
+          docker_name: 'owasp/zap2docker-stable'
+          target: http://localhost:8080
+          rules_file_name: '.zap/rules.tsv'
+          cmd_options: '-a'
+
       - name: Stop containers
         if: always()
         run: docker-compose -f "docker-compose.yml" down
