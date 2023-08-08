@@ -14,20 +14,32 @@ jobs:
       - uses: actions/checkout@v2
       - uses: max/secret-scan@master
 
-  deploy:
+  build:
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v2
 
       - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y git python3-pip
+        run: sudo apt-get update && sudo apt-get install -y python3 python3-pip
 
-      - name: Install AWS CLI
-        run: sudo pip3 install awscli
+      - name: Install DVPWA dependencies
+        run: pip3 install -r dvpwa/requirements.txt
 
+      - name: Build DVPWA
+        run: cd dvpwa && python3 setup.py build
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
       - name: Configure AWS CLI
         run: aws configure
+        env:
+          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          region: eu-west-2
+          key_name: key-pair-dvpwa
 
       - name: Create EC2 instance
         run: aws ec2 run-instances \
@@ -47,13 +59,16 @@ jobs:
       - name: SSH into EC2 instance
         run: ssh -i my-key-pair.pem ubuntu@${{ steps.get_public_ip_address.stdout }}
 
-      - name: Install dvpwa
-        run: sudo apt-get install -y dvpwa
+      - name: Copy DVPWA artifacts
+        run: scp -r dvpwa/build/ ubuntu@${{ steps.get_public_ip_address.stdout }}:~/
 
-      - name: Start dvpwa
+      - name: Install DVPWA
+        run: sudo pip3 install dvpwa
+
+      - name: Start DVPWA
         run: sudo dvpwa start
 
-      - name: Check that dvpwa is running
+      - name: Check that DVPWA is running
         run: curl http://${{ steps.get_public_ip_address.stdout }}:8080/
   
   SCA:
