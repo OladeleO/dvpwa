@@ -28,7 +28,7 @@ jobs:
       - name: Build DVPWA app
         run: python setup.py build
       - name: Deploy DVPWA app to AWS EC2
-        uses: aws-actions/ec2-deploy@v2
+        uses: ec2-deploy@v2
         with:
           access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
