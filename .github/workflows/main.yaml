@@ -23,6 +23,10 @@ jobs:
           python-version: 3.8
       - name: Clone DVPWA repository
         uses: actions/checkout@v2
+      - name: Upgrade pip
+        run: pip install --upgrade pip
+      - name: Install psycopg2
+        run: pip install psycopg2
       - name: Install dependencies
         run: pip install -r requirements.txt
       - name: Build DVPWA app
