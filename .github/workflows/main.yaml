@@ -7,26 +7,6 @@ name: Main CI / CD Pipeline
 on: [push]
 
 jobs:
-
-  dependabot:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Dependabot metadata
-        id: metadata
-        uses: dependabot/fetch-metadata@v1
-        with:
-          github-token: "${{ secrets.GITHUB_TOKEN }}"
-
-  
-  secret-scanning-review:
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Secret Scanning Review Action'
-        uses: advanced-security/secret-scanning-review-action@v0
-        with:
-          token: ${{ secrets.SECRET_SCAN_REVIEW_GITHUB_TOKEN }}
-          fail-on-alert: false
-          fail-on-alert-exclude-closed: false
   
   SCA:
     needs: container_scanning
